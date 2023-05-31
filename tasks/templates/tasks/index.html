@@ -1,0 +1,48 @@
+{% extends 'core/base.html' %}
+
+{% block title %}{{ user.username }}{% endblock %}
+
+{% block body %}
+  <div class="w-1/2 my-4 mx-auto rounded-xl">
+    <div class="m-0 p-0 text-justify">
+      {% if tasks.count != 0 %}
+        <h1 class="font-semibold text-3xl mb-8">Hello {{ user.username }}, here are your tasks :</h1>
+      {% else %}
+        <h1 class="font-semibold text-3xl mb-8">Hello {{ user.username }}, you don't have any tasks for now.</h1>
+      {% endif %}
+    </div>
+
+
+    {% for task in tasks %}
+      <div class="group my-6 px-6 flex justify-between bg-slate-50 hover:bg-slate-100 border border-gray-200 shadow-md
+      {% if task.priority == 3 %} shadow-red-400  {% elif task.priority == 2 %} shadow-orange-300 {% else %} shadow-slate-300 {% endif %}  rounded-xl">
+        <!-- Title, Description, Priority -->
+        <div class="w-4/5 p-4">
+          <ul>
+            <div class="mb-2">
+              <label class="font-semibold">Title :</label><br>
+              <li>{{ task.title }}</li>
+            </div>
+            <div class="mb-2">
+              <label class="font-semibold">Description :</label><br>
+              <li>{{ task.description }}</li>
+            </div>
+            <div>
+              <label class="font-semibold {% if task.priority == 3 %} text-red-800 {% elif task.priority == 2 %} text-orange-800 {% else %} {% endif %}">Priority level : {{ task.priority }}</label>
+            </div>
+          </ul>
+        </div>
+        <!-- Edit and Delete buttons -->
+        <div class="w-1/5 grid opacity-10 group-hover:grid group-hover:opacity-100  grid-rows-2 gap-2 my-6 justify-items-center items-center">
+
+          <div >
+            <a href="{% url 'tasks:edit' task.id %}" class="w-full px-2 py-2 text-md font-semibold bg-slate-500 text-white rounded-xl hover:bg-slate-700">Edit</a>
+          </div>
+          <div>
+            <a href="{% url 'tasks:delete' task.id %}" class="w-full px-2 py-2 text-md font-semibold bg-red-500 text-white rounded-xl hover:bg-red-700">Delete</a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}
