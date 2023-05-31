@@ -6,3 +6,5 @@
 <br>
 
 ## Still some functional and styling upgrades to come
+
+## Dashboard feature : changing task links in Nav bar to a unique Dashboard link
