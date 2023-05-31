@@ -5,4 +5,4 @@
 ## Allows the creation of a personal account, and adding tasks. The tasks can be edited and/or removed. Each task has a priority level.
 <br>
 
-## Still fuctional and styling upgrades to come
+## Still some functional and styling upgrades to come
