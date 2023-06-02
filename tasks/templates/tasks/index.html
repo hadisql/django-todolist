@@ -3,18 +3,18 @@
 {% block title %}{{ user.username }}{% endblock %}
 
 {% block body %}
-  <div class="w-1/2 my-4 mx-auto rounded-xl">
-    <div class="m-0 p-0 text-justify">
-      {% if tasks.count != 0 %}
-        <h1 class="font-semibold text-3xl mb-8">Hello {{ user.username }}, here are your tasks :</h1>
-      {% else %}
-        <h1 class="font-semibold text-3xl mb-8">Hello {{ user.username }}, you don't have any tasks for now.</h1>
-      {% endif %}
-    </div>
+  <div class="w-2/3 mx-auto">
+    {% if tasks.count != 0 %}
+      <h1 class="font-semibold text-3xl mb-8">Hello {{ user.username|title }}, here are your tasks :</h1>
+    {% else %}
+      <h1 class="font-semibold text-3xl mb-8">Hello {{ user.username|title }}, you don't have any tasks for now.</h1>
+    {% endif %}
+  </div>
 
 
+  <div class="w-2/3 my-4 mx-auto">
     {% for task in tasks %}
-      <div class="group my-6 px-6 flex justify-between bg-slate-50 hover:bg-slate-100 border border-gray-200 shadow-md
+      <div class="group my-6 px-6 flex justify-between bg-slate-100 hover:bg-slate-300 border border-gray-300 shadow-md
       {% if task.priority == 3 %} shadow-red-400  {% elif task.priority == 2 %} shadow-orange-300 {% else %} shadow-slate-300 {% endif %}  rounded-xl">
         <!-- Title, Description, Priority -->
         <div class="w-4/5 p-4">
@@ -33,10 +33,10 @@
           </ul>
         </div>
         <!-- Edit and Delete buttons -->
-        <div class="w-1/5 grid opacity-10 group-hover:grid group-hover:opacity-100  grid-rows-2 gap-2 my-6 justify-items-center items-center">
+        <div class="w-1/5 grid opacity-10 group-hover:grid group-hover:opacity-100  grid-cols-2 gap-2 my-6 justify-items-center items-center">
 
           <div >
-            <a href="{% url 'tasks:edit' task.id %}" class="w-full px-2 py-2 text-md font-semibold bg-slate-500 text-white rounded-xl hover:bg-slate-700">Edit</a>
+            <a href="{% url 'tasks:edit' task.id %}" class="w-full px-2 py-2 text-md font-semibold bg-slate-500 text-white rounded-xl hover:bg-slate-700 border">Edit</a>
           </div>
           <div>
             <a href="{% url 'tasks:delete' task.id %}" class="w-full px-2 py-2 text-md font-semibold bg-red-500 text-white rounded-xl hover:bg-red-700">Delete</a>
@@ -45,4 +45,12 @@
       </div>
     {% endfor %}
   </div>
-{% endblock %}
+
+  <a href="{% url 'tasks:new_task' %}" class="text-3xl">
+    <div class="grid grid-cols-1 p-4 justify-items-center w-2/3 mx-auto bg-gray-100 hover:bg-gray-300 rounded-lg shadow-md border border-gray-300">
+      +
+    </div>
+  </a>
+
+
+{% endblock body %}

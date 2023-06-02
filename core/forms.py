@@ -36,3 +36,9 @@ class SignupForm(UserCreationForm):
         'class': 'w-full py-4 rounded-md',
         'placeholder': 'Repeat Password'
     }))
+
+class UpdateProfile(forms.ModelForm):
+
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'first_name', 'last_name')

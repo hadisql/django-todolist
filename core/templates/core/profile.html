@@ -1,0 +1,31 @@
+{% extends 'core/base.html' %}
+
+{% block title %}My Account{% endblock %}
+
+{% block body %}
+  <div class="w-1/2 my-4 mx-auto rounded-xl">
+    <div class="m-0 p-0 text-justify">
+        <h1 class="font-semibold text-3xl mb-8">{{ request.user.username|title }}'s Account Page</h1>
+    </div>
+  </div>
+
+
+  <div class="p-6 m-6 bg-slate-100 rounded-xl">
+    <div>
+      <h2>Username : {{ username }}</h2>
+    </div>
+    <div>
+      <h2>First name : {{ first_name }}</h2>
+    </div>
+    <div>
+      <h2>Last name : {{ last_name }}</h2>
+    </div>
+    <div>
+      <h2>Email : {{ email }}</h2>
+    </div>
+  </div>
+
+  <a href="{% url 'core:profile_update' %}" class="m-8 bg-gray-500 text-white rounded-xl py-4 px-8 font-semibold hover:bg-gray-700">Edit Profile</a>
+
+
+{% endblock %}
