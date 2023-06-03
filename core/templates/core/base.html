@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
   <head>
@@ -5,26 +6,98 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet">
+    <!--
+    <style>
+      .material-symbols-outlined {
+        font-variation-settings:
+        'FILL' 0,
+        'wght' 600,
+        'GRAD' 0,
+        'opsz' 48
+      }
+      </style> -->
     <title>{% block title %}{% endblock %} | Todolist</title>
   </head>
 
   <body>
-    <nav class="py-6 px-6 flex justify-between items-center border-b border-slate-200">
-      <a href="/" class="text-xl font-semibold">Todolist</a>
+    <header x-data="{ open: false }" @keydown.window.escape="open = false" class="bg-white">
+      <nav class="py-6 px-6 mx-auto flex max-w-7xl items-center justify-between border-b border-slate-200">
+        <!--mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8-->
+        <div class="flex lg:flex-1">
+          <span class="material-symbols-outlined mr-4">
+            add_task
+          </span>
+          <a href="/" class="text-xl font-semibold">Todolist</a>
+        </div>
 
-      <div class="space-x-6">
+        <div class="flex lg:hidden">
+          <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700" @click="open = true" id="btnHamburger">
+            <span class="sr-only">Open main menu</span>
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"></path>
+            </svg>
+          </button>
+        </div>
+
         {% if request.user.is_authenticated %}
-          <a href="{% url 'tasks:index' %}" class="text-lg font-semibold hover:text-slate-500">My tasks</a>
-          <a href="{% url 'tasks:new_task' %}" class="px-4 py-3 text-lg font-semibold hover:text-slate-500 rounded-xl outline outline-2 hover:outline-dashed">New task</a>
-          <a href="{% url 'core:profile' %}" class="px-4 py-3 text-lg font-semibold bg-stone-300 hover:text-slate-500 rounded-xl outline outline-2 hover:outline-dashed">My account</a>
-          <a href="{% url 'core:logout' %}" class="px-6 py-3 text-lg font-semibold bg-slate-500 text-white rounded-xl hover:bg-slate-700">Log out</a>
+          <div class="hidden lg:flex lg:gap-x-12" x-data="Components.popoverGroup()" x-init="init()">
+            <a href="{% url 'tasks:index' %}" class="text-lg font-semibold hover:text-slate-500">My tasks</a>
+            <a href="{% url 'tasks:new_task' %}" class="px-4 py-3 text-lg font-semibold hover:text-slate-500 rounded-xl outline outline-2 hover:outline-dashed">New task</a>
+            <a href="{% url 'core:profile' %}" class="px-4 py-3 text-lg font-semibold bg-stone-300 hover:text-slate-500 rounded-xl outline outline-2 hover:outline-dashed">My account</a>
+          </div>
+          <div class="hidden lg:flex lg:flex-1 lg:justify-end">
+            <a href="{% url 'core:logout' %}" class="px-6 py-3 text-lg font-semibold bg-slate-500 text-white rounded-xl hover:bg-slate-700">Log out</a>
+          </div>
         {% else %}
-          <a href="{% url 'core:signup' %}" class="text-lg font-semibold hover:text-slate-500">Sign up</a>
-          <a href="{% url 'core:login' %}" class="px-6 py-3 text-lg font-semibold bg-slate-500 text-white rounded-xl hover:bg-slate-700">Log in</a>
+          <div class="hidden lg:flex lg:flex-1 lg:justify-end">
+            <a href="{% url 'core:signup' %}" class="text-lg font-semibold hover:text-slate-500 underline decoration-2">Sign up</a>
+            <a href="{% url 'core:login' %}" class="ml-6 text-lg font-semibold text-gray-900 hover:text-gray-500">Log in
+              <span aria-hidden="true">→</span>
+            </a>
+          </div>
         {% endif %}
+
+      </nav>
+      <div x-description="Mobile menu, show/hide based on menu open state." class="lg:hidden" x-ref="dialog" aria-modal="true" id="rightMenu">
+
+        <div x-description="Background backdrop, show/hide based on slide-over state." class="fixed inset-0 z-10"></div>
+
+        <div class="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10" @click.away="open = false">
+          <div class="flex items-center justify-between pb-6 border-b">
+            <div class="flex lg:flex-1">
+              <span class="material-symbols-outlined mr-4">
+              add_task
+              </span>
+              <a href="/" class="text-xl font-semibold -m-1.5 p-1.5">Todolist</a>
+            </div>
+
+            <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700" @click="open = false">
+              <span class="sr-only">Close menu</span>
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
+            </button>
+          </div>
+
+          <div class="mt-6 flow-root">
+            <div class="-my-6 divide-y divide-gray-500/10">
+              <div class="space-y-8 py-8">
+                <!--<a href="#" class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Log in</a>-->
+                <a href="{% url 'core:signup' %}" class="block text-lg font-semibold hover:text-slate-500 underline decoration-2">Sign up</a>
+                <a href="{% url 'core:login' %}" class="block text-lg font-semibold text-gray-900 hover:text-gray-500">Log in
+                  <span aria-hidden="true">→</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </nav>
+
+
+    </header>
 
     <div class="px-6 py-6">
       {% block body %}
@@ -46,5 +119,6 @@
         </ul>
       </div>
     </footer>
+    <script src="{% static 'js/script.js' %}"></script>
   </body>
 </html>
