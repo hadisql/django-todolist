@@ -12,10 +12,10 @@ class NewTaskForm(forms.ModelForm):
         'placeholder': 'Title e.g "Shopping with Emma"'
     }))
 
-    description = forms.CharField(widget=forms.TextInput(attrs={
+    description = forms.CharField(widget=forms.Textarea(attrs={
         'class': 'w-full py-4 rounded-md',
         'placeholder': 'Task description'
-    }))
+    }), required=False)
 
     priority = forms.NumberInput(attrs={'class': 'py-4 rounded-md'})
 

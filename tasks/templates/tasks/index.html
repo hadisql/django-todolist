@@ -3,7 +3,7 @@
 {% block title %}{{ user.username }}{% endblock %}
 
 {% block body %}
-  <div class="w-2/3 mx-auto">
+  <div class="sm:w-5/6 md:w-3/4 lg:w-2/3 mx-auto">
     {% if tasks.count != 0 %}
       <h1 class="font-semibold text-3xl mb-8">Hello {{ user.username|title }}, here are your tasks :</h1>
     {% else %}
@@ -12,42 +12,70 @@
   </div>
 
 
-  <div class="w-2/3 my-4 mx-auto">
+  <div class="sm:w-5/6 md:w-3/4 lg:w-2/3 my-4 mx-auto">
     {% for task in tasks %}
-      <div class="group my-6 px-6 flex justify-between bg-slate-100 hover:bg-slate-300 border border-gray-300 shadow-md
-      {% if task.priority == 3 %} shadow-red-400  {% elif task.priority == 2 %} shadow-orange-300 {% else %} shadow-slate-300 {% endif %}  rounded-xl">
-        <!-- Title, Description, Priority -->
-        <div class="w-4/5 p-4">
-          <ul>
-            <div class="mb-2">
-              <label class="font-semibold">Title :</label><br>
-              <li>{{ task.title }}</li>
-            </div>
-            <div class="mb-2">
-              <label class="font-semibold">Description :</label><br>
-              <li>{{ task.description }}</li>
-            </div>
-            <div>
-              <label class="font-semibold {% if task.priority == 3 %} text-red-800 {% elif task.priority == 2 %} text-orange-800 {% else %} {% endif %}">Priority level : {{ task.priority }}</label>
-            </div>
-          </ul>
+      <div class="group my-6 flex justify-between bg-slate-100 hover:bg-slate-300 border border-gray-300 shadow-md
+        rounded-xl"> <!--{% if task.priority == 3 %} shadow shadow-red-400  {% elif task.priority == 2 %} shadow-orange-300 {% else %} shadow-slate-300 {% endif %}-->
+
+        <div class="my-auto mx-2">
+          {% if task.priority == 3 %}
+          <p class="text-red-400  text-3xl">
+            &#8648;
+          </p>
+          {% elif task.priority == 2 %}
+          <p class="text-orange-400 text-3xl">
+            <!--&rarr;-->
+            &#8649;
+          </p>
+          {% else %}
+          <p class="text-green-400 text-3xl">
+            <!--&darr;-->
+            &#8650;
+          </p>
+          {% endif %}
+        </div>
+
+      <!-- Title, Description, Priority -->
+        <div class="w-3/4 px-4 py-2">
+
+          <div class="">
+            <p class="font-semibold">{{ task.title | title }}</p>
+          </div>
+          {% if task.description %}
+          <div class="mt-2 mb-2">
+            <p class="text-sm"><span class="font-semibold">Description : </span>{{ task.description }}</p>
+          </div>
+          {% endif %}
+          <!-- instead of shadows i'll use arrows
+          <div>
+            <p class="font-semibold {% if task.priority == 3 %} text-red-800 {% elif task.priority == 2 %} text-orange-800 {% else %} {% endif %}">Priority level : {{ task.priority }}</p>
+          </div>-->
+
         </div>
         <!-- Edit and Delete buttons -->
-        <div class="w-1/5 grid opacity-10 group-hover:grid group-hover:opacity-100  grid-cols-2 gap-2 my-6 justify-items-center items-center">
+        <div class="w-1/4 grid opacity-10 group-hover:grid group-hover:opacity-100  grid-cols-2 gap-2 justify-items-center items-center">
 
-          <div >
-            <a href="{% url 'tasks:edit' task.id %}" class="w-full px-2 py-2 text-md font-semibold bg-slate-500 text-white rounded-xl hover:bg-slate-700 border">Edit</a>
-          </div>
-          <div>
-            <a href="{% url 'tasks:delete' task.id %}" class="w-full px-2 py-2 text-md font-semibold bg-red-500 text-white rounded-xl hover:bg-red-700">Delete</a>
-          </div>
+
+          <a href="{% url 'tasks:edit' task.id %}" class="w-full font-semibold">
+            <span class="px-2 py-1 text-white rounded-lg hover:bg-slate-400 material-symbols-outlined">
+              edit
+              </span>
+          </a>
+
+
+            <a href="{% url 'tasks:delete' task.id %}" class="w-full  font-semibold">
+              <span class="px-2 py-1 text-white rounded-lg hover:bg-red-700 material-symbols-outlined">
+              delete
+              </span>
+            </a>
+
         </div>
       </div>
     {% endfor %}
   </div>
 
-  <a href="{% url 'tasks:new_task' %}" class="text-3xl">
-    <div class="grid grid-cols-1 p-4 justify-items-center w-2/3 mx-auto bg-gray-100 hover:bg-gray-300 rounded-lg shadow-md border border-gray-300">
+  <a href="{% url 'tasks:new_task' %}" class="text-3xl text-slate-700">
+    <div class="grid grid-cols-1 justify-items-center sm:w-5/6 md:w-3/4 lg:w-2/3 mx-auto bg-slate-100 hover:bg-gray-300 rounded-lg shadow-md border border-gray-300">
       +
     </div>
   </a>
