@@ -1,5 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 
 from .forms import NewTaskForm, EditTaskForm
 from .models import Task
@@ -38,6 +40,7 @@ def new_task(request):
 @login_required
 def edit_task(request, pk):
     task = get_object_or_404(Task, pk=pk, created_by=request.user)
+    print("TASK PRIMARY KEY !!!!!!!!",task.pk)
     if request.method == "POST":
         form = EditTaskForm(request.POST, instance=task)
 
@@ -50,7 +53,8 @@ def edit_task(request, pk):
 
     return render(request, 'tasks/form.html', {
         'form': form,
-        'title': 'Edit Task'
+        'title': 'Edit Task',
+        'task': task
     })
 
 @login_required
