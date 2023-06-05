@@ -4,7 +4,7 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block body %}
-  <div class="w-2/3 my-6 p-6 mx-auto bg-slate-200 rounded-xl">
+  <div class="w-full md:w-3/4 my-6 p-6 mx-auto bg-slate-200 rounded-xl">
     <h1 class="mb-6 text-3xl">{{ title }}</h1>
 
     <form action="." method="POST">
@@ -23,8 +23,14 @@
         </div>
       {% endif %}
 
-      <input type="submit" value="Submit" class="mt-6 bg-gray-500 text-white rounded-xl py-4 px-8 font-semibold hover:bg-gray-700">
+      <div class="flex mt-6 w-full justify-between">
+        <input type="submit" value="Submit" class="bg-gray-500 text-white rounded-xl py-4 px-8 font-semibold hover:bg-gray-700">
+        {% if title == "Edit Task" %} <!-- Delete button only on Edit Form -->
+        <a href="{% url 'tasks:delete' task.pk %}" class="py-4 px-8 bg-red-600 rounded-xl text-white hover:bg-red-900">Delete</a>
+        {% endif %}
+      </div>
     </form>
+
   </div>
 
 {% endblock %}
