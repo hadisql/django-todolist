@@ -14,18 +14,21 @@
     <div>
       <h2>Username : {{ username }}</h2>
     </div>
-    <div>
+    <div class="mt-4">
       <h2>First name : {{ first_name }}</h2>
     </div>
-    <div>
+    <div class="mt-4">
       <h2>Last name : {{ last_name }}</h2>
     </div>
-    <div>
+    <div class="mt-4">
       <h2>Email : {{ email }}</h2>
     </div>
+    <div class="mt-10 mb-4">
+      <a href="{% url 'core:profile_update' %}" class="bg-gray-500 text-white rounded-xl py-4 px-8 font-semibold hover:bg-gray-700">Edit Profile</a>
+    </div>
+
   </div>
 
-  <a href="{% url 'core:profile_update' %}" class="m-8 bg-gray-500 text-white rounded-xl py-4 px-8 font-semibold hover:bg-gray-700">Edit Profile</a>
 
 
 {% endblock %}
