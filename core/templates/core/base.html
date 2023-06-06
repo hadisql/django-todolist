@@ -22,12 +22,13 @@
     <header>
       <nav class="py-6 px-6 items-center border-b border-slate-200">
         <div class="flex justify-end">
-          <a href="/" class="flex-1 text-2xl font-semibold">Todolist</a>
+          <div class="flex-1 text-2xl font-semibold">
+            <a href="/">Todolist</a>
+          </div>
 
           <div class="space-x-6 max-lg:hidden">
             {% if request.user.is_authenticated %}
               <a href="{% url 'tasks:index' %}" class="text-lg font-semibold hover:text-slate-500">My tasks</a>
-              <a href="{% url 'tasks:new_task' %}" class="px-4 py-3 text-lg font-semibold hover:text-slate-500 rounded-xl hover:outline-dashed">New task</a>
               <a href="{% url 'core:profile' %}" class="px-4 py-3 text-lg font-semibold bg-gray-300 hover:text-slate-500 rounded-xl hover:outline-dashed">My account</a>
               <a href="{% url 'core:logout' %}" class="px-6 py-3 text-lg font-semibold bg-slate-500 text-white rounded-xl hover:bg-slate-700">Log out</a>
             {% else %}
@@ -48,7 +49,6 @@
       <div id="menu" class="lg:w-1/2 sm:w-2/3 py-6 mx-auto text-xl font-semibold text-center shadow-lg rounded-xl hidden">
         {% if request.user.is_authenticated %}
           <a href="{% url 'tasks:index' %}" class="block my-6 hover:text-slate-500">My tasks</a>
-          <a href="{% url 'tasks:new_task' %}" class="block my-6 hover:text-slate-500 rounded-xl">New task</a>
           <a href="{% url 'core:profile' %}" class="block my-6 hover:text-slate-500">My account</a>
           <a href="{% url 'core:logout' %}" class="block mt-6 mb-4 hover:text-slate-500">Log out</a>
         {% else %}
