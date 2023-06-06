@@ -56,4 +56,5 @@ def profile_update(request):
         form = UpdateProfile(instance=request.user)
         return render(request, 'core/profile_update.html', {
             "form": form,
+            "show_cancel": True
         })
