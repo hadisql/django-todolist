@@ -11,10 +11,9 @@
     {% endif %}
   </div>
 
-
   <div class="sm:w-5/6 md:w-3/4 lg:w-2/3 my-4 mx-auto">
     {% for task in tasks %}
-      <div class="group my-6 flex justify-between bg-slate-100 hover:bg-slate-300 border border-gray-300 shadow-md
+      <div data-aos="fade-up" class="group my-6 flex justify-between bg-slate-100 hover:bg-slate-300 border border-gray-300 shadow-md
         rounded-xl"> <!--{% if task.priority == 3 %} shadow shadow-red-400  {% elif task.priority == 2 %} shadow-orange-300 {% else %} shadow-slate-300 {% endif %}-->
 
         <div class="my-auto ml-3">
