@@ -26,10 +26,10 @@
         </div>
       {% endif %}
 
-      <div class="flex flex-start gap-4 items-end sm:w-5/6 md:w-3/4 lg:w-2/3  px-4 mx-0">
+      <div class="block-inline sm:w-5/6 md:w-3/4 lg:w-2/3 mx-0">
         <input type="submit" value="Update" class="mt-6 bg-gray-500 text-white rounded-xl py-4 px-8 font-semibold hover:bg-gray-700">
         {% if show_cancel %}
-          <button type="button" onclick="location.href='/'" class="t-6 bg-red-600 text-white rounded-xl py-4 px-8 font-semibold hover:bg-red-900">Cancel</button>
+          <button type="button" onclick="location.href='/'" class="mt-6 ml-6 bg-red-600 text-white rounded-xl py-4 px-8 font-semibold hover:bg-red-900">Cancel</button>
         {% endif %}
         {% if message %}
           <h2 class="">&check; {{ message }}</h2>
