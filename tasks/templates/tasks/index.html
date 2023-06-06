@@ -3,13 +3,19 @@
 {% block title %}{{ user.username }}{% endblock %}
 
 {% block body %}
-  <div class="sm:w-5/6 md:w-3/4 lg:w-2/3 mx-auto">
+  <div class="sm:w-5/6 md:w-3/4 lg:w-2/3 mx-auto mb-8">
     {% if tasks.count != 0 %}
-      <h1 class="font-semibold text-3xl mb-8">Hello {{ user.username|title }},<br> here are your tasks :</h1>
+      <h1 class="font-semibold text-3xl">Hello {{ user.username|title }},<br> you have {{ tasks.count }} {% if tasks.count > 1 %}tasks{% else %}task{% endif %} undone.</h1>
     {% else %}
-      <h1 class="font-semibold text-3xl mb-8">Hello {{ user.username|title }},<br> you don't have any tasks for now.</h1>
+      <h1 class="font-semibold text-3xl">Hello {{ user.username|title }},<br> you don't have any tasks for now.</h1>
     {% endif %}
   </div>
+
+  <a href="{% url 'tasks:new_task' %}" class=" text-3xl text-slate-700">
+    <div data-aos="fade-left" class="grid grid-cols-1 justify-items-center sm:w-5/6 md:w-3/4 lg:w-2/3 mx-auto bg-slate-100 hover:bg-gray-300 rounded-lg shadow-md border border-gray-300">
+      +
+    </div>
+  </a>
 
   <div class="sm:w-5/6 md:w-3/4 lg:w-2/3 my-4 mx-auto">
     {% for task in tasks %}
@@ -42,7 +48,7 @@
           </div>
           {% if task.description %}
           <div class="mt-2 mb-2">
-            <p class="text-sm"><span class="font-semibold">Description : </span>{{ task.description }}</p>
+            <p class="text-sm"><span class="font-semibold">Description : </span>{{ task.description|truncatewords:10 }}</p>
           </div>
           {% endif %}
           <!-- instead of shadows i'll use arrows
@@ -66,11 +72,7 @@
     {% endfor %}
   </div>
 
-  <a href="{% url 'tasks:new_task' %}" class="text-3xl text-slate-700">
-    <div class="grid grid-cols-1 justify-items-center sm:w-5/6 md:w-3/4 lg:w-2/3 mx-auto bg-slate-100 hover:bg-gray-300 rounded-lg shadow-md border border-gray-300">
-      +
-    </div>
-  </a>
+
 
 
 {% endblock body %}
