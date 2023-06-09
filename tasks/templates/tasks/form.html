@@ -10,9 +10,39 @@
     <form action="." method="POST">
       {% csrf_token %}
 
-      <div class="space-y-4">
-        {{ form.as_p }}
+      <div class="my-4">
+        {{ form.title }}
       </div>
+      <div class="my-4">
+        {{ form.description }}
+      </div>
+      <div class="my-4">
+        {{ form.priority }}
+      </div>
+      <div class="my-4">
+
+        {% if title == "New Task" %}
+          {% for tag in existing_tags %}
+            <input type="checkbox" name="tags" id="id_tags_{{ tag.pk }}"
+                  value="{{ tag.pk }}">
+            <label for="id_tags_{{ tag.pk }}">{{ tag.name }}</label>
+          {% endfor %}
+
+        {% elif title == "Edit Task" %}
+          {% for tag in existing_tags %}
+            <input type="checkbox" name="tags" id="id_tags_{{ tag.pk }}"
+                  value="{{ tag.pk }}" {% if tag in old_selected_tags %}checked{% endif %}>
+            <label for="id_tags_{{ tag.pk }}">{{ tag.name }}</label>
+          {% endfor %}
+        {% endif %}
+
+      </div>
+
+      <div class="my-4">
+        <label for="id_custom_tags">Custom Tags</label>
+        <input type="text" name="custom_tags" placeholder="shopping, chores .." id="id_custom_tags">
+      </div>
+
       {% if form.errors or form.non_field_errors %}
         <div class="mb-3 p-6 bg-red-100 rounded-xl">
           {% for field in form %}

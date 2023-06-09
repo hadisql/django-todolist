@@ -1,11 +1,12 @@
 from django import forms
 
-from .models import Task
+from .models import Task, Tag
 
 class NewTaskForm(forms.ModelForm):
+
     class Meta:
         model = Task
-        fields = ('title', 'description', 'priority',)
+        fields = ('title', 'description', 'priority','tags')
 
     title = forms.CharField(widget=forms.TextInput(attrs={
         'class': 'w-full py-4 rounded-md',
@@ -17,10 +18,15 @@ class NewTaskForm(forms.ModelForm):
         'placeholder': 'Task description'
     }), required=False)
 
-    priority = forms.NumberInput(attrs={'class': 'py-4 rounded-md'})
+    #priority = forms.NumberInput(attrs={'class': 'py-4 rounded-md'})
+    priority = forms.ChoiceField(choices=Task.PRIORITY_CHOICES, widget=forms.RadioSelect())
+
+    #tags = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple(),
+    #                                      queryset=Tag.objects.all())
 
 
 class EditTaskForm(forms.ModelForm):
+
     class Meta:
         model = Task
         fields = ('title', 'description', 'priority',)
@@ -33,6 +39,10 @@ class EditTaskForm(forms.ModelForm):
     description = forms.CharField(widget=forms.TextInput(attrs={
         'class': 'w-full py-4 rounded-md',
         'placeholder': 'Task description'
-    }))
+    }), required=False)
 
-    priority = forms.NumberInput(attrs={'class': 'py-4 rounded-md'})
+    #priority = forms.NumberInput(attrs={'class': 'py-4 rounded-md'})
+    priority = forms.ChoiceField(choices=Task.PRIORITY_CHOICES, widget=forms.RadioSelect())
+
+    #tags = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple(),
+    #                                      queryset=Tag.objects.all())
