@@ -25,21 +25,21 @@
           {% for tag in existing_tags %}
             <input type="checkbox" name="tags" id="id_tags_{{ tag.pk }}"
                   value="{{ tag.pk }}">
-            <label for="id_tags_{{ tag.pk }}">{{ tag.name }}</label>
+            <label for="id_tags_{{ tag.pk }}">#{{ tag.name }}</label>
           {% endfor %}
 
         {% elif title == "Edit Task" %}
           {% for tag in existing_tags %}
             <input type="checkbox" name="tags" id="id_tags_{{ tag.pk }}"
                   value="{{ tag.pk }}" {% if tag in old_selected_tags %}checked{% endif %}>
-            <label for="id_tags_{{ tag.pk }}">{{ tag.name }}</label>
+            <label for="id_tags_{{ tag.pk }}">#{{ tag.name }}</label>
           {% endfor %}
         {% endif %}
 
       </div>
 
       <div class="my-4">
-        <label for="id_custom_tags">Custom Tags</label>
+        <label for="id_custom_tags">Custom Tags: #</label>
         <input type="text" name="custom_tags" placeholder="shopping, chores .." id="id_custom_tags">
       </div>
 
@@ -53,10 +53,14 @@
         </div>
       {% endif %}
 
-      <div class="flex mt-6 w-full justify-between">
+      <div class="flex mt-6 w-full">
         <input type="submit" value="Submit" class="bg-gray-500 text-white rounded-xl py-4 px-8 font-semibold hover:bg-gray-700">
         {% if title == "Edit Task" %} <!-- Delete button only on Edit Form -->
-        <a href="{% url 'tasks:delete' task.pk %}" class="py-4 px-8 bg-red-600 rounded-xl text-white hover:bg-red-900">Delete</a>
+        <p id="delete_message" class="hidden ml-6 py-4 font-semibold">Are you sure ?</p>
+        <a id="delete_no" class="hidden py-4 px-6 ml-6 bg-gray-600 rounded-xl text-white hover:bg-gray-900">No</a>
+        <a id="delete_yes" href="{% url 'tasks:delete' task.pk %}" class="hidden py-4 px-4 ml-2 bg-red-600 rounded-xl text-white hover:bg-red-800 opacity-50 hover:opacity-100">Yes</a>
+
+        <a id="delete_button" class="py-4 px-8 ml-6 bg-red-600 rounded-xl text-white hover:bg-red-900">Delete</a>
         {% endif %}
       </div>
     </form>

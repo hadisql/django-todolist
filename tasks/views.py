@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponseRedirect
-from django.urls import reverse
+# from django.db.models import Q
+# from functools import reduce
 
 from .forms import NewTaskForm, EditTaskForm
 from .models import Task, Tag
@@ -23,15 +23,24 @@ def new_task(request):
     if request.method == "POST":
         form = NewTaskForm(request.POST)
         #selected_tags = Tag.objects.get(pk=request.POST["tags"]) ###
-        selected_tags = Tag.objects.filter(pk__in=request.POST.getlist('tags'))
+        selected_tags = Tag.objects.filter(pk__in=request.POST.getlist('tags')) #tags selected amongst the existing ones
+
+        new_custom_tags = []
+        for custom_tag in request.POST['custom_tags'].split():
+            new_custom_tags.append(Tag.objects.create(name=custom_tag)) #add each new tag in Tag objects
 
         print(f"NEW TASK, TAGS SELECTED ---------> {selected_tags}")
+        #print(f"TASKS CUSTOM : --------> {Tag.objects.filter(reduce(lambda x,y: x | y, [Q(name__contains=word) for word in new_custom_tags]))}") #https://stackoverflow.com/questions/7088173/how-to-query-model-where-name-contains-any-word-in-python-list
+        print(f"CUSTOM TAGS OBJECT LIST: --------> {Tag.objects.filter(name__in=new_custom_tags)}")
+
+        print(f"UNION OBJECT LIST : ------> {selected_tags.union(Tag.objects.filter(name__in=new_custom_tags))}")
 
         if form.is_valid():
             task = form.save(commit=False) #prevents conflict because "created_by" is still not set
             task.created_by = request.user
             task.save()
-            task.tags.set(selected_tags) ###
+            task.tags.set(selected_tags.union(Tag.objects.filter(name__in=new_custom_tags))) # adding the selected tags + new custom tags
+
 
             return redirect('tasks:index')
     else:
@@ -52,19 +61,24 @@ def edit_task(request, pk):
     print("TASK PRIMARY KEY -------->",task.pk)
     if request.method == "POST":
         form = EditTaskForm(request.POST, instance=task)
-        #new_selected_tags = Tag.objects.get(pk=request.POST["tags"]) ###
+
         new_selected_tags = Tag.objects.filter(pk__in=request.POST.getlist('tags'))
 
         print(f"EDIT TASK, NEW SELECTED TAGS ---------> {new_selected_tags}")
+        new_custom_tags = []
+        for custom_tag in request.POST['custom_tags'].split():
+            new_custom_tags.append(Tag.objects.create(name=custom_tag))
+        print(f"NEW CUSTOM TAG ADDED : --------> {new_custom_tags}")
 
         if form.is_valid():
             form.save() # "created-by" already exist so we can save directly
-            task.tags.set(new_selected_tags) ###
-            for tag in existing_tags:
-                if tag not in new_selected_tags:
+            task.tags.set(new_selected_tags.union(Tag.objects.filter(name__in=new_custom_tags))) # adding the selected tags + new custom tags
+
+            for tag in existing_tags: #if tag unselected, we remove it from task
+                if tag not in (new_selected_tags.union(Tag.objects.filter(name__in=new_custom_tags))):
                     task.tags.remove(tag)
 
-            return redirect('tasks:index')#, pk=task.id)
+            return redirect('tasks:index')
     else:
         form = EditTaskForm(instance=task)
         old_selected_tags = task.tags.all()
