@@ -47,6 +47,7 @@
             <p class="font-semibold">{{ task.title | title }}</p>
           </div>
 
+          {% if task.tags.all %}
           <div class="mt-2 mb-2">
             <p class="text-sm">
                 <span class="font-semibold">Tags: </span>
@@ -55,8 +56,7 @@
                 {% endfor %}
             </p>
           </div>
-
-
+          {% endif %}
 
           {% if task.description %}
           <div class="mt-2 mb-2">

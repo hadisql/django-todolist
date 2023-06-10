@@ -99,3 +99,16 @@ def delete_task(request, pk):
     task.delete()
 
     return redirect('tasks:index')
+
+@login_required
+def edit_tags(request):
+    tags = Tag.objects.all()
+
+    if request.method == "POST":
+        for tag in request.POST:
+            print("selected tag ---------->",tag)
+            Tag.objects.filter(name=tag).delete()
+
+    return render(request, 'tasks/tags.html', {
+        'tags': tags,
+    })

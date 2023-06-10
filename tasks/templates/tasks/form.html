@@ -17,9 +17,11 @@
         {{ form.description }}
       </div>
       <div class="my-4">
+        <p class="font-semibold text-md">Priority :</p>
         {{ form.priority }}
       </div>
-      <div class="my-4">
+      <div class="my-6">
+        <p class="font-semibold text-md">Tags :</p>
 
         {% if title == "New Task" %}
           {% for tag in existing_tags %}
@@ -34,13 +36,15 @@
                   value="{{ tag.pk }}" {% if tag in old_selected_tags %}checked{% endif %}>
             <label for="id_tags_{{ tag.pk }}">#{{ tag.name }}</label>
           {% endfor %}
+          <a href="{% url 'tasks:edit_tags' %}" class="text-sm mt-2 ml-6 bg-gray-100 hover:bg-gray-300 py-1 px-2 rounded-md" style="cursor: pointer">Edit Tags</a>
         {% endif %}
 
       </div>
 
-      <div class="my-4">
+      <div class="my-6">
         <label for="id_custom_tags">Custom Tags: #</label>
-        <input type="text" name="custom_tags" placeholder="shopping, chores .." id="id_custom_tags">
+        <input type="text" name="custom_tags" placeholder="shopping, chores.." id="id_custom_tags">
+
       </div>
 
       {% if form.errors or form.non_field_errors %}
@@ -54,13 +58,13 @@
       {% endif %}
 
       <div class="flex mt-6 w-full">
-        <input type="submit" value="Submit" class="bg-gray-500 text-white rounded-xl py-4 px-8 font-semibold hover:bg-gray-700">
+        <input type="submit" value="Submit" class="bg-gray-500 text-white rounded-xl py-4 px-8 font-semibold hover:bg-gray-700" style="cursor: pointer">
         {% if title == "Edit Task" %} <!-- Delete button only on Edit Form -->
         <p id="delete_message" class="hidden ml-6 py-4 font-semibold">Are you sure ?</p>
         <a id="delete_no" class="hidden py-4 px-6 ml-6 bg-gray-600 rounded-xl text-white hover:bg-gray-900">No</a>
         <a id="delete_yes" href="{% url 'tasks:delete' task.pk %}" class="hidden py-4 px-4 ml-2 bg-red-600 rounded-xl text-white hover:bg-red-800 opacity-50 hover:opacity-100">Yes</a>
 
-        <a id="delete_button" class="py-4 px-8 ml-6 bg-red-600 rounded-xl text-white hover:bg-red-900">Delete</a>
+        <a id="delete_button" class="py-4 px-8 ml-6 bg-red-600 rounded-xl text-white hover:bg-red-900" style="cursor: pointer">Delete</a>
         {% endif %}
       </div>
     </form>
