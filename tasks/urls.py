@@ -11,4 +11,5 @@ urlpatterns = [
     #path("<int:pk>/delete/", views.delete_task, name="delete"),
     path("delete/<int:pk>", views.delete_task, name="delete"),
     path("edit/<int:pk>/", views.edit_task, name="edit"),
+    path("tags/", views.edit_tags, name="edit_tags"),
 ]
