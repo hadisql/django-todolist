@@ -1,0 +1,26 @@
+{% extends 'core/base.html' %}
+
+
+{% block title %}Edit Tags{% endblock %}
+
+{% block body %}
+  <div class="w-full md:w-3/4 my-6 p-6 mx-auto bg-slate-200 rounded-xl">
+    <h2 class="text-xl mb-6 font-semibold ">Select Tags to remove :</h2>
+
+      <form action="." method="POST">
+        {% csrf_token %}
+        <div class="flex flex-wrap">
+        {% for tag in tags %}
+          <div class="flex mr-2">
+            <input class="block" type="checkbox" name="{{ tag }}" id="{{ tag.id }}" value="{{ tag }}">
+            <label class="block ml-2" for="{{ tag.id }}">{{ tag.name }}</label>
+          </div>
+        {% endfor %}
+        </div>
+        <br>
+        <input type="submit" value="delete" class="bg-red-500 text-white rounded-xl py-4 px-8 font-semibold hover:bg-red-700" style="cursor: pointer">
+      </form>
+
+  </div>
+
+{% endblock %}
