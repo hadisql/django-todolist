@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,14 +22,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-cof9p#5e)i)+=qez3t_poan^l#7h+id-k92h9@laqlv#(+i(@a"
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', '0').lower() in ['true', 't', '1']
 
-ALLOWED_HOSTS = [ '*' ]
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(' ')
 
-CSRF_TRUSTED_ORIGINS = ['https://178b-92-92-147-177.ngrok-free.app']
+# CSRF_TRUSTED_ORIGINS = ['https://178b-92-92-147-177.ngrok-free.app']
 
 LOGIN_URL = "/login/"
 LOGIN_REDIRECT_URL = "/" #the url where you're redirected once logged in
@@ -81,12 +82,17 @@ WSGI_APPLICATION = "django-todolist.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+if DEBUG:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': dj_database_url.parse(os.environ.get('DATABASE_URL'), conn_max_age=600),
+    }
 
 
 # Password validation
